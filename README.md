@@ -10,7 +10,7 @@ WT peak dataset
 
 <img src="https://github.com/psehgal0504/Final_Project/blob/master/Images/WT_dataset.png" width="500">
 
-WT mutant dataset
+Mutant peak dataset
 
 <img src="https://github.com/psehgal0504/Final_Project/blob/master/Images/Mutant_dataset.png" width="500">
 
