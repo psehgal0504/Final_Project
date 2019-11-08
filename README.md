@@ -35,3 +35,11 @@ Milestone 1 (11/14/2019): Get familiar with using the ChIPseeker package by work
 Milestone 2 (11/21/2019): Continue with understanding the package and answer the last two questions.
 Milestone 3 (11/27/2019): Optimizing the results and overcome any road blocks hit. Submit a rough draft for QA. 
 Milestone 4 (12/06/2019): Address the QA problems and make the final draft. Submit the final project.
+
+## User Interface
+Some of the expected results should look like this.
+
+<img src="https://github.com/psehgal0504/Final_Project/blob/master/Images/Annotate_peaks.jpg" width="500">
+
+<img src="https://github.com/psehgal0504/Final_Project/blob/master/Images/Regualtory_region_pie_chart.jpg" width="500">
+
