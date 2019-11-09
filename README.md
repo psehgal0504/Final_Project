@@ -43,3 +43,7 @@ Some of the expected results should look like this.
 
 <img src="https://github.com/psehgal0504/Final_Project/blob/master/Images/Regualtory_region_pie_chart.jpg" width="500">
 
+## References
+[A ChIP-Seq Data Analysis Pipeline Based on Bioconductor Packages](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC5389943/)
+
+[ChIPseeker: an R package for ChIP peak Annotation, Comparison and Visualization](https://www.bioconductor.org/packages/release/bioc/vignettes/ChIPseeker/inst/doc/ChIPseeker.html)
