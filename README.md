@@ -17,9 +17,9 @@ Mutant peak dataset
 ## Proposed Analysis
 I want to look at binding pattern differences between the WT and mutant Runx2.
 For this I have four questions that I want to answer:
-1. How is the enrichment of the protein binding is affected across the chromosomes for WT and mutant?
-2. What regulatory elements are bound by the WT and the mutant?
-3. Runx2 WT and mutant binding to TSS regions?
+1. What regulatory elements are bound by the WT and the mutant?
+2. Runx2 WT and mutant binding to TSS regions?
+3. How is the enrichment of the protein binding is affected across the chromosomes for WT and mutant?
 4. Functional enrichment analysis for WT and mutant?
 
 I will be using the ChIP-seq specific R Bioconductor packages to do my ChIP-seq analysis. 
