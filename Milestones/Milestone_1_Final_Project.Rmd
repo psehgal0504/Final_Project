@@ -1,0 +1,77 @@
+---
+title: "Milestone_1_Final_Project"
+author: "Prerna Sehgal"
+date: "11/12/2019"
+output: html_document
+---
+
+## R Markdown
+
+## Proposed Analysis
+I want to look at binding pattern differences between the WT and mutant Runx2.
+For this I have four questions that I want to answer:
+1. What regulatory elements are bound by the WT and the mutant?
+2. Runx2 WT and mutant binding to TSS regions?
+3. How is the enrichment of the protein binding affected across the chromosomes for WT and mutant?
+4. Functional enrichment analysis for WT and mutant?
+
+I will be using the ChIP-seq specific R Bioconductor packages to do my ChIP-seq analysis. 
+```{r}
+library(ChIPseeker)
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
+library(clusterProfiler)
+```
+
+## Proposed Timeline & Major milestones (or segments).
+Milestone 1 (11/14/2019): Get familiar with using the ChIPseeker package by working with a known data set. Try to get the result for the first two problems.
+Milestone 2 (11/21/2019): Continue with understanding the package and answer the last two questions.
+Milestone 3 (11/27/2019): Optimizing the results and overcome any road blocks hit. Submit a rough draft for QA. 
+Milestone 4 (12/06/2019): Address the QA problems and make the final draft. Submit the final project.
+
+## Milestone 1
+I am still trying to understand the ChiPseeker vignette with a known data set. I was able to answer the first two questions but I still have to work on them to look asthetically beautiful.
+
+1. What regulatory elements are bound by the WT and the mutant?
+## Loading files
+```{r}
+files <- getSampleFiles()
+print(files)
+files
+peak <- readPeakFile(files[[4]])
+peak
+P1 <- data.frame(peak)
+setwd("~/desktop/files/peaks")
+f1 <- readPeakFile("IP-WT_S13_vs_Input-WT_S15_peaks.chrfiltered.bed")
+f2 <- readPeakFile("IP-4RK_S16_vs_Input-4RK_S14_peaks.chrfiltered.bed")
+f1
+f2
+wildtype <- data.frame(f1)
+mutant <- data.frame(f2)
+```
+
+
+## Regulatory regions
+```{r}
+txdb1 = TxDb.Hsapiens.UCSC.hg38.knownGene
+peakAnno <- annotatePeak(f1, tssRegion=c(-3000, 3000),
+                         TxDb=txdb1)
+plotAnnoPie(peakAnno)
+title(main = "Runx2 WT", line = -2)
+peakAnno1 <- annotatePeak(f2, tssRegion=c(-3000, 3000),
+                         TxDb=txdb1)
+plotAnnoPie(peakAnno1)
+title(main = "Runx2 mutant", line = -2)
+```
+
+## TSS plots
+```{r}
+txdb1 = TxDb.Hsapiens.UCSC.hg38.knownGene
+promoter <- getPromoters(TxDb = txdb1, upstream=1000, downstream=1000)
+tagMatrix <- getTagMatrix(f1, windows=promoter)
+tagHeatmap(tagMatrix, xlim=c(-1000, 1000), color="red")
+title(main = "Runx2 WT")
+tagMatrix1 <- getTagMatrix(f2, windows=promoter)
+tagHeatmap(tagMatrix1, xlim=c(-1000, 1000), color="red")
+title(main = "Runx2 mutant")
+```
