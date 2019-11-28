@@ -1,0 +1,108 @@
+---
+title: "Final_Project_Beta"
+author: "Prerna Sehgal"
+date: "11/27/2019"
+output: html_document
+---
+
+## R Markdown
+
+## Proposed Analysis
+I want to look at binding pattern differences between the WT and mutant Runx2.
+For this I have four questions that I want to answer:
+1. What regulatory elements are bound by the WT and the mutant?
+2. Runx2 WT and mutant binding to TSS regions?
+3. How is the enrichment of the protein binding affected across the chromosomes for WT and mutant?
+4. Functional enrichment analysis for WT and mutant?
+
+I will be using the ChIP-seq specific R Bioconductor packages to do my ChIP-seq analysis. 
+```{r}
+library(ChIPseeker)
+library(ChIPpeakAnno)
+library(TxDb.Hsapiens.UCSC.hg38.knownGene)
+txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
+library(clusterProfiler)
+```
+
+## Proposed Timeline & Major milestones (or segments).
+Milestone 1 (11/14/2019): Get familiar with using the ChIPseeker package by working with a known data set. Try to get the result for the first two problems.
+Milestone 2 (11/21/2019): Continue with understanding the package and answer the last two questions.
+Milestone 3 (11/27/2019): Optimizing the results and overcome any road blocks hit. Submit a rough draft for QA. 
+Milestone 4 (12/06/2019): Address the QA problems and make the final draft. Submit the final project.
+
+## Loading files
+```{r}
+setwd("~/desktop/files/peaks")
+wt <- readPeakFile("IP-WT_S13_vs_Input-WT_S15_peaks.chrfiltered.bed")
+wt
+mutant <- readPeakFile("IP-4RK_S16_vs_Input-4RK_S14_peaks.chrfiltered.bed")
+mutant
+peaklist <- list(Runx2_WT = wt, Runx2_Mutant = mutant)
+```
+
+## ChIP Peaks Plot of WT and Mutant Runx2
+>- This plot is used to know the peak locations over the whole genome.
+>- Covplot function calculates the coverage of peak regions over chromosomes and generate a figure to visualize.
+```{r}
+covplot(wt, weightCol="V5", title = "Runx2 WT ChIP Peaks over Chromosomes")
+covplot(mutant, weightCol="V5", title = "Runx2 Mutant ChIP Peaks over Chromosomes")
+```
+
+## Overlap of peaks between the WT and Mutant Runx2
+>- To Test the overlaps of all the peaks. 
+>- From the testing result, we can check the association between WT and Mutant Runx2. 
+>- The vennDiagram shows the numbers of overlapping peak for these TFs.
+```{r}
+olpeaks <- findOverlapsOfPeaks(wt, mutant)
+makeVennDiagram(olpeaks,
+                fill=c("#009E73", "#F0E442"), # circle fill color
+                col=c("#D55E00", "#0072B2"), #circle border color
+                cat.col=c("#D55E00", "#0072B2"))
+```
+
+## Heatmap of ChIP binding of Runx2 WT and mutant to TSS regions
+```{r}
+promoter <- getPromoters(TxDb = txdb, upstream=1000, downstream=1000)
+tagMatrix <- lapply(peaklist, getTagMatrix, windows=promoter)
+tagHeatmap(tagMatrix, xlim=c(-1000, 1000), color="red")
+```
+
+## Average profile of ChIP peaks binding of Runx2 WT and mutant to TSS regions
+>- Compare the average binding profile of WT and Mutant Runx2.
+```{r}
+plotAvgProf(tagMatrix, xlim=c(-1000, 1000), facet="row")
+```
+
+## ChIP peak genomic annotation comparison between Runx2 WT and mutant.
+>- This is done to annotate the location of a given peak in terms of genomic features. 
+>- annotatePeak function assigns peaks to genomic annotation in “annotation” column of the output, which includes whether a peak is in the TSS, Exon, 5’ UTR, 3’ UTR, Intronic or Intergenic region.
+```{r}
+peakAnnoList <- lapply(peaklist, annotatePeak, TxDb=txdb,
+                       tssRegion=c(-1000, 1000), verbose=FALSE)
+plotAnnoBar(peakAnnoList)
+```
+
+## Visualize distribution of Runx2 WT and mutant binding loci relative to TSS
+>- R function plotDistToTSS can be used to compare distance to TSS profiles among ChIPseq data.
+>- plotDistToTSS can calculate the percentage of binding sites upstream and downstream from the TSS of the nearest genes, and visualize the distribution.
+```{r}
+plotDistToTSS(peakAnnoList)
+```
+
+## Functional Profile Comparison of Runx2 WT and mutant
+>- The clusterProfiler package provides compareCluster function for comparing biological themes among gene clusters, and can be easily adopted to compare different ChIP peak experiments.
+```{r fig.width=4, fig.height=4}
+genes_list = lapply(peakAnnoList, function(i) as.data.frame(i)$geneId)
+names(genes_list) = sub("_", "\n", names(genes_list))
+comp_path <- compareCluster(geneCluster   = genes_list,
+                         fun           = "enrichPathway",
+                         pvalueCutoff  = 0.05,
+                         pAdjustMethod = "BH")
+dotplot(comp_path, showCategory = 12, title = "Pathway Enrichment Analysis")
+```
+
+## Overlap of annotated genes between Runx2 WT and mutant
+>- vennplot function can be used to visualize the overlap of the nearest genes stored in peakAnnoList.
+```{r}
+vennplot(genes_list)
+```
