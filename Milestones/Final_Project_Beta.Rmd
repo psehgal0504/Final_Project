@@ -22,6 +22,7 @@ library(ChIPpeakAnno)
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
 txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 library(clusterProfiler)
+library(ReactomePA)
 ```
 
 ## Proposed Timeline & Major milestones (or segments).
