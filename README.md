@@ -26,9 +26,14 @@ For this I have four questions that I want to answer:
 I will be using the ChIP-seq specific R Bioconductor packages to do my ChIP-seq analysis. 
 ```{r}
 library(ChIPseeker)
+library(ChIPpeakAnno)
 library(TxDb.Hsapiens.UCSC.hg38.knownGene)
-txdb <- TxDb.Hsapiens.UCSC.hg38.knownGene
 library(clusterProfiler)
+library(ReactomePA)
+library(org.Hs.eg.db)
+library(GenomicFeatures)
+library(GenomicRanges)
+library(ggplot2)
 ```
 
 ## Proposed Timeline & Major milestones (or segments).
