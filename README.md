@@ -1,5 +1,5 @@
 # Final_Project
-The R Markdown file and the html output file is uploaded in the milestones folder. The final project Rpubs file can be viewed here 
+The R Markdown file and the html output file is uploaded in the Milestones folder. The final project Rpubs file can be viewed here 
 
 ## Description
 Runx2 is a transcription factor that is overexpressed and promotes metastasis in breast cancer. In our pilot study we have shown that Runx2 undergoes post-translational modification. WT was found to promote TGF beta induced migration and invasion but this ability was lost in case of the modification deficient mutant generated in the lab. The data suggests that this post-translational mofification of Runx2 WT might promote metastasis. 
